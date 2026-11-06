@@ -19,7 +19,7 @@ httpx==0.28.1
 httpx-sse==0.4.3
 python-dotenv==1.2.4
 python-multipart==0.0.32
-certifi==2026.7.22
+certifi==2026.10.18
 idna==3.20
 attrs==26.1.0
 jsonschema==4.26.0
