@@ -1,0 +1,47 @@
+# ST-MCP 离线镜像（aarch64）。构建全程不联网：所有依赖来自 wheels/ 本地目录。
+# 构建上下文 = 交付包根目录：
+#   docker build -f docker/Dockerfile.offline -t st-mcp:0.1.0 .
+#
+# 为什么是 3.11：神通只提供到 cp311 的 STPython 轮子（drivers/STPython/Python311/…），
+# 换更高版本的 Python 基础镜像会直接没有可用驱动；pydantic/mcp 侧的 cp311 轮子已随包备齐。
+FROM python:3.11-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    LD_LIBRARY_PATH=/opt/st-mcp/aci
+
+WORKDIR /opt/st-mcp
+
+COPY wheels/ /opt/st-mcp/wheels/
+# STPython 是编译扩展，运行期要 dlopen 厂商的 libaci.so（与数据库同版本、同为 64 位）。
+COPY aci/ /opt/st-mcp/aci/
+
+# 依赖闭包只有 mcp + pydantic，均在 wheels/ 中（pydantic_core 为 aarch64 cp311 轮子）。
+RUN pip install --no-index --find-links=/opt/st-mcp/wheels "st-mcp==0.1.0"
+
+# STPython（神通 Python 驱动）由厂商提供，放进 wheels/ 才会装；缺失时镜像仍可构建，
+# 运行期 --test-connection 会明确报 "driver missing"，不会误报成密码解析错误。
+RUN if ls /opt/st-mcp/wheels/STPython-*.whl >/dev/null 2>&1; then \
+        pip install --no-index --find-links=/opt/st-mcp/wheels STPython && echo "STPython installed"; \
+    else \
+        echo "WARNING: no STPython wheel in wheels/ - MCP will not be able to connect"; \
+    fi && \
+    if ls /opt/st-mcp/aci/libaci.so >/dev/null 2>&1; then \
+        echo "ACI: $(ls -l /opt/st-mcp/aci/libaci.so | awk '{print $5}') bytes"; \
+    else \
+        echo "WARNING: aci/libaci.so 缺失，STPython 导入会失败"; \
+    fi
+
+RUN useradd -m -u 10001 stmcp && rm -rf /opt/st-mcp/wheels
+
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod 755 /usr/local/bin/entrypoint.sh
+
+USER stmcp
+EXPOSE 8000
+
+# 参数一律由 entrypoint.sh 依环境变量拼装（TRANSPORT/MCP_PATH/SSE_HOST/SSE_PORT/ACCESS_MODE），
+# 这里留空，否则镜像默认 CMD 里的 --transport 会赢过 -e MCP_TRANSPORT=streamable-http。
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD []

@@ -1,0 +1,6 @@
+* text=auto
+*.sh text eol=lf
+docker/* text eol=lf
+secrets/*.example text eol=lf
+tools/* text eol=lf
+*.py text eol=lf

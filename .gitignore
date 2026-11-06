@@ -1,0 +1,25 @@
+# 第三方二进制与现场产物一律不进仓库
+*.whl
+*.so
+*.zip
+*.tar.gz
+*.tar
+!wheels/requirements.txt
+
+# 口令与现场配置（deploy.conf 是要提交的默认值，实例配置按现场生成）
+secrets/*.env
+instances/*.conf
+
+# 构建与运行残留
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+*.orig
+*.rej
+.DS_Store
+
+# 现场可能顺手生成的校验件（发布前由 release 流程生成，不手改）
+SHA256SUMS.txt
+filelist.txt

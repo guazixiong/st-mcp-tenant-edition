@@ -1,0 +1,84 @@
+[project]
+name = "st-mcp"
+version = "0.1.0"
+description = "ShenTong Database Tuning and Analysis Tool"
+readme = "README.md"
+requires-python = ">=3.11"   # 神通 STPython 驱动在 aarch64 上只发布到 cp311，基础镜像必须是 3.11
+dependencies = [
+    "mcp>=1.5.0",
+    "pydantic>=2.0.0",
+]
+license = "mit"
+
+[[project.authors]]
+name = "ShenTong MCP Team"
+email = "team@shentong.com"
+
+[build-system]
+requires = [ "hatchling",]
+build-backend = "hatchling.build"
+
+[project.scripts]
+st-mcp = "st_mcp:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["./src"]
+asyncio_default_fixture_loop_scope = "function"
+
+[dependency-groups]
+dev = [
+    "docker>=7.1.0",
+    "pyright==1.1.398",
+    "pytest-asyncio>=0.26.0",
+    "pytest>=8.3.5",
+    "ruff==0.11.2",
+]
+
+[tool.black]
+line-length = 150
+
+[tool.ruff]
+line-length = 150
+target-version = "py38"
+exclude = [".venv*"]
+
+lint.select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "W",   # pycodestyle warnings
+    # "C90", # mccabe complexity
+    "N",   # pep8-naming
+    # "D",   # pydocstyle
+    "UP",  # pyupgrade
+    "RUF"  # ruff-specific rules
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+force-single-line = true
+known-first-party = ["st-mcp"]
+
+[tool.pyright]
+typeCheckingMode = "standard"
+pythonVersion = "3.12"
+strictParameterNullChecking = true
+reportMissingTypeStubs = false
+# reportUnknownMemberType = true
+# reportUnknownParameterType = true
+# reportUnknownVariableType = true
+# reportUnknownArgumentType = true
+reportPrivateUsage = true
+reportUntypedFunctionDecorator = true
+reportMissingTypeArgument = true
+reportInvalidTypeVarUse = true
+reportUnnecessaryCast = true
+# reportUnnecessaryComparison = true
