@@ -1,6 +1,6 @@
 [project]
 name = "st-mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "ShenTong Database Tuning and Analysis Tool"
 readme = "README.md"
 requires-python = ">=3.11"   # 神通 STPython 驱动在 aarch64 上只发布到 cp311，基础镜像必须是 3.11

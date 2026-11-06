@@ -23,3 +23,7 @@ dist/
 # 现场可能顺手生成的校验件（发布前由 release 流程生成，不手改）
 SHA256SUMS.txt
 filelist.txt
+
+# release build outputs
+release/
+.release-stage/

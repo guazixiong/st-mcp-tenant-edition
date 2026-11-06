@@ -27,6 +27,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+if os.path.basename(HERE) == "tools":
+    HERE = os.path.dirname(HERE)
 TOOLS = os.path.join(HERE, "tools")
 DATA = os.environ.get("ST_ADMIN_DATA") or os.path.join(HERE, "tenants")
 CREATE = os.path.join(TOOLS, "create-tenant.sh")

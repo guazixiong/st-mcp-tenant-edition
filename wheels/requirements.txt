@@ -1,0 +1,32 @@
+# 与 rev.9 离线包内 wheels/ 完全同版本的冻结清单（去掉厂商闭源件与本项目自身轮子）。
+# 在联网机器上：sh tools/fetch-offline-deps.sh 会按本文件下载 aarch64/cp311 的轮子到 wheels/。
+# 厂商闭源的两件不在这里，需要自备：STPython（见 vendor/PUT-FILES-HERE.md）、libaci.so（见 aci/README.md）。
+mcp==1.27.2
+uvicorn==0.54.0
+starlette==1.8.0
+sse-starlette==3.5.0
+pydantic==2.13.4
+pydantic-core==2.46.4
+pydantic-settings==2.16.0
+annotated-types==0.8.0
+typing-extensions==4.16.0
+typing-inspection==0.4.4
+anyio==4.15.1
+click==8.5.0
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.28.1
+httpx-sse==0.4.3
+python-dotenv==1.2.4
+python-multipart==0.0.32
+certifi==2026.7.22
+idna==3.20
+attrs==26.1.0
+jsonschema==4.26.0
+jsonschema-specifications==2025.9.1
+referencing==0.37.0
+rpds-py==2026.9.1
+pyjwt==2.15.1
+cryptography==44.0.2
+cffi==2.1.1
+pycparser==3.11
