@@ -1,7 +1,7 @@
 # 与 rev.9 离线包内 wheels/ 完全同版本的冻结清单（去掉厂商闭源件与本项目自身轮子）。
 # 在联网机器上：sh tools/fetch-offline-deps.sh 会按本文件下载 aarch64/cp311 的轮子到 wheels/。
 # 厂商闭源的两件不在这里，需要自备：STPython（见 vendor/PUT-FILES-HERE.md）、libaci.so（见 aci/README.md）。
-mcp==1.27.2
+mcp==1.30.0
 uvicorn==0.54.0
 starlette==1.8.0
 sse-starlette==3.5.0
